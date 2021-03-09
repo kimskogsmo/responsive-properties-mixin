@@ -1,0 +1,65 @@
+$breakpoints: (
+  'mobile': 580px,
+  'tablet': 1024px,
+  'ultrawide': 1600px,
+);
+
+@mixin responsive-prop (
+  $property: null,
+  $mobile: null,
+  $tablet: null,
+  $ultrawide: null,
+  $default: null
+) {
+  @if $default != null {
+    @media screen and (min-width: map-get('tablet', $breakpoints)) {
+      #{$property}: $default; 
+    }
+  }  
+  @if $mobile != null {
+    @media screen and (max-width: map-get('mobile', $breakpoints)) {
+      #{$property}: $mobile; 
+    }
+  }
+  @if $tablet != null {
+    @media screen and (max-width: map-get('tablet', $breakpoints)) {
+      #{$property}: $tablet; 
+    }
+  }
+  @if $ultrawide != null {
+    @media screen and (max-width: map-get('ultrawide', $breakpoints)) {
+      #{$property}: $ultrawide; 
+    }
+  }
+}
+
+// Usage
+// --------
+
+// without responsive-prop() 
+.my-class {
+  padding: 4rem;
+  
+  @media screen and (max-width: $ultrawide) {
+    padding: 3rem;  
+  }
+  
+  @media screen and (max-width: $tablet) {
+    padding: 2rem;  
+  }
+  
+  @media screen and (max-width: $mobile) {
+    padding: 1rem;  
+  }
+}
+
+// with responsive-prop() 
+.my-class {
+  @include responsive-prop(
+    padding, 
+    $default: 4rem,
+    $ultrawide: 3rem,
+    $tablet: 2rem,
+    $mobile: 1rem
+  );
+}
